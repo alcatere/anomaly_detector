@@ -1,7 +1,7 @@
 import logging
 import argparse
-from src.anomaly_detector.pipeline import run_pipeline
-from src.anomaly_detector.utils import load_config
+from src.pipeline import run_pipeline
+from src.utils import load_config
 
 logging.basicConfig(level=logging.INFO)
 
