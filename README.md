@@ -22,8 +22,21 @@ Clone the repository:
 ```bash
 git clone https://github.com/yourusername/anomaly-detector.git
 cd anomaly-detector
-
+```
 ---
+
+## Create and activate a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+## Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Configurations
 
@@ -41,7 +54,45 @@ model:
 
 ## Usage
 
-Start the server 
+Train the model (calculate baseline stats):
 
 ```bash
-uvicorn src.anomaly_detector.api:app --reload
+python -m scripts.train_model.py --config config/config.yaml
+```
+
+
+Start FastAPI the server 
+
+```bash
+uvicorn src.api:app --reload
+```
+The server will be available at http://127.0.0.1:8000
+
+## Available Endpoints
+
+You can interact with the API through the following endpoints:
+
+### Batch Detection
+
+Endpoint: POST /detect/
+
+Description: Upload a CSV file for processing. The system will return a JSON response with the anomalies found.
+
+Example usage with curl:
+
+```bash
+curl -X POST "http://127.0.0.1:8000/detect/" \  
+  -F "file=@data/test/sensor_data_test.csv"
+```
+
+### Streaming Simulation
+
+Endpoint: POST /simulate/
+
+Description: Starts a simulation that processes one record per second from the test file (test_data_path in config.yaml). Anomalies will be displayed in the server log and saved to data/output/anomalies_streaming.csv.
+
+Example usage with curl:
+
+```bash
+curl -X POST "http://127.0.0.1:8000/simulate/" \  
+  -F "file=@data/test/sensor_data_test.csv"
