@@ -76,7 +76,7 @@ You can interact with the API through the following endpoints:
 
 Endpoint: POST /detect/
 
-Description: Upload a CSV file for processing. The system will return a JSON response with the anomalies found.
+Upload a CSV file for processing. The system will return a JSON response with the anomalies found.
 
 Example usage with curl:
 
@@ -89,10 +89,11 @@ curl -X POST "http://127.0.0.1:8000/detect/" \
 
 Endpoint: POST /simulate/
 
-Description: Starts a simulation that processes one record per second from the test file (test_data_path in config.yaml). Anomalies will be displayed in the server log and saved to data/output/anomalies_streaming.csv.
+Starts a simulation that processes one record per second from the test file (test_data_path in config.yaml). Anomalies will be displayed in the server log and saved to data/output/anomalies_streaming.csv.
 
 Example usage with curl:
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/simulate/" \  
   -F "file=@data/test/sensor_data_test.csv"
+```
