@@ -1,10 +1,11 @@
 data:
   output_path: data/output/anomalies_batch.csv
+  rolling_window_size: 60
   test_data_path: data/test/sensor_data_test.csv
   train_data_path: data/train/sensor_data_train.csv
 logging:
   level: INFO
 model:
-  normal_mean: 50.00
-  normal_std: 1.00
+  normal_mean: 65.085
+  normal_std: 0.2297935698320219
   threshold_multiplier: 3

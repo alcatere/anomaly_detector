@@ -15,7 +15,7 @@ def main():
     config = load_config(args.config)
 
     train_path = Path(config["data"]["train_data_path"])
-    window_size = config["model"]["threshold_multiplier"]
+    window_size = config["data"]["rolling_window_size"]
 
     try:
         train_df = pd.read_csv(train_path)
