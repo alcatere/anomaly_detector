@@ -5,6 +5,6 @@ data:
 logging:
   level: INFO
 model:
-  normal_mean: 0.50
+  normal_mean: 50.00
   normal_std: 1.00
   threshold_multiplier: 3

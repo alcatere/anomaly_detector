@@ -1,20 +1,30 @@
 from fastapi import FastAPI, UploadFile, File
 import pandas as pd
 import io
-from .detector import AnomalyDetector
 import asyncio
 import logging
+import os
+
+from .detector import AnomalyDetector
+from .utils import load_config
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 app = FastAPI(title="Anomaly Detection API")
 
-# Example: pre-trained baseline stats
-NORMAL_MEAN = 50.0
-NORMAL_STD = 5.0
-THRESHOLD_MULTIPLIER = 3.0
+default_config_path = "config/config.yaml"
 
-detector = AnomalyDetector(NORMAL_MEAN, NORMAL_STD, THRESHOLD_MULTIPLIER)
+def get_anomaly_values(config_path=default_config_path):
+    config = load_config(config_path)
+    return (config["model"]["normal_mean"], 
+            config["model"]["normal_std"], 
+            config["model"].get("threshold_multiplier", 3.0), 
+            config["data"].get("anomaly_output_path", "data/output/anomalies_streaming.csv"))
+
+normal_mean, normal_std, threshold_multiplier, anomaly_output_path = get_anomaly_values()
+
+detector = AnomalyDetector(normal_mean, normal_std, threshold_multiplier)
 
 @app.get("/")
 def root():
@@ -52,7 +62,7 @@ async def simulate_stream(file: UploadFile = File(...)):
     results = []
 
     # Ensure output directory exists
-    os.makedirs(os.path.dirname(ANOMALY_OUTPUT_PATH), exist_ok=True)
+    os.makedirs(os.path.dirname(anomaly_output_path), exist_ok=True)
 
     for _, row in df.iterrows():
         value = row["value"]
@@ -70,7 +80,7 @@ async def simulate_stream(file: UploadFile = File(...)):
 
             # Save anomaly to CSV (append mode)
             pd.DataFrame([anomaly_record]).to_csv(
-                ANOMALY_OUTPUT_PATH, mode="a", header=not os.path.exists(ANOMALY_OUTPUT_PATH), index=False
+                anomaly_output_path, mode="a", header=not os.path.exists(anomaly_output_path), index=False
             )
 
             results.append({"timestamp": str(timestamp), "value": value, "status": "ANOMALY"})

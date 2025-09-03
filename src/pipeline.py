@@ -28,7 +28,7 @@ def run_pipeline(test_data_path: str, normal_mean: float, normal_std: float,
         logger.warning(f"{len(anomalies)} anomalies found ⚠️")
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        anomalies.to_csv(f'{output_path.split(".")[0]}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv', index=False)
+        anomalies.to_csv(output_path, index=False)
         logger.info(f"Anomaly report saved at {output_path}")
 
     return anomalies
