@@ -15,21 +15,33 @@ It’s built with **FastAPI** and designed with a production-style structure (co
 
 ---
 
-## 📂 Project Structure
-anomaly-detector/
-│── config/
-│   └── config.yaml               # Configuration file
-│── data/
-│   ├── test/                     # Example test datasets
-│   └── output/                   # Generated anomaly reports
-│── scripts/
-│   ├── train_model.py            # Training script (set normal mean/std)
-│   └── run_api.py                # Entry point for the FastAPI server
-│── src/
-│   └── anomaly_detector/
-│       ├── init.py
-│       ├── utils.py              # Config loader
-│       ├── detector.py           # Core anomaly detector class
-│       └── api.py                # FastAPI app (batch + streaming)
-│── README.md
-│── requirements.txt
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/anomaly-detector.git
+cd anomaly-detector
+
+---
+
+## Configurations
+
+Edit config/config.yaml to set paths and thresholds. Example:
+data:
+  test_data_path: "data/test/test.csv"
+  output_path: "data/output/anomalies_batch.csv"
+
+model:
+  normal_mean: 50.0
+  normal_std: 5.0
+  threshold_multiplier: 3.0
+
+---
+
+## Usage
+
+Start the server 
+
+```bash
+uvicorn src.anomaly_detector.api:app --reload
